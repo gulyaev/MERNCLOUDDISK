@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import "./app.less"
 import Navbar from "./navbar/Navbar";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Registration from "./registration/Registration";
 import Login from "./registration/Login";
-import {useDispatch, useSelector} from "react-redux";
-import {auth} from "../actions/user";
+import Disk from "./disk/Disk";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../actions/user";
 
 function App() {
     const isAuth = useSelector(state => state.user.isAuth)
@@ -19,13 +20,19 @@ function App() {
     return (
         <BrowserRouter>
             <div className='app'>
-                <Navbar/>
+                <Navbar />
                 <div className="wrap">
-                    {!isAuth &&
-                    <Routes>
-                        <Route path="/registration" element={<Registration />}/>
-                        <Route path="/login" element={<Login />}/>
-                    </Routes>
+                    {!isAuth ?
+                        <Routes>
+                            <Route path="/registration" element={<Registration />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="*" element={<Navigate to ="/login" />}/>
+                        </Routes>
+                        :
+                        <Routes>
+                            <Route exact path="/" element={<Disk />} />
+                            <Route path="*" element={<Navigate to ="/" />}/>
+                        </Routes>
                     }
                 </div>
             </div>
